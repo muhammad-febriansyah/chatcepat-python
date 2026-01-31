@@ -1,0 +1,29 @@
+# Systemd Service untuk Google Maps Scraper API
+# Copy file ini ke /etc/systemd/system/gmaps-scraper.service
+
+[Unit]
+Description=Google Maps Scraper API
+After=network.target
+
+[Service]
+Type=notify
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/chatcepat-scraper
+Environment="PATH=/var/www/chatcepat-scraper/venv/bin"
+ExecStart=/var/www/chatcepat-scraper/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 --timeout 300 api:app
+
+# Restart policy
+Restart=always
+RestartSec=10
+
+# Security
+NoNewPrivileges=true
+PrivateTmp=true
+
+# Logging
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  scraper-api:
+    build: .
+    container_name: gmaps-scraper-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - DEBUG=false
+      - API_KEY=${API_KEY:-chatcepat-secret-key-2024}
+      - USE_PROXY=${USE_PROXY:-false}
+    volumes:
+      - ./logs:/app/logs
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+        reservations:
+          cpus: '1'
+          memory: 1G

@@ -1,0 +1,13 @@
+# Supervisor Configuration untuk Google Maps Scraper API
+# Copy file ini ke /etc/supervisor/conf.d/gmaps-scraper.conf
+
+[program:gmaps-scraper]
+command=/var/www/chatcepat-scraper/venv/bin/gunicorn --workers 4 --bind 0.0.0.0:5000 --timeout 300 api:app
+directory=/var/www/chatcepat-scraper
+user=www-data
+autostart=true
+autorestart=true
+stopasgroup=true
+killasgroup=true
+stderr_logfile=/var/log/supervisor/gmaps-scraper.err.log
+stdout_logfile=/var/log/supervisor/gmaps-scraper.out.log
